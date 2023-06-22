@@ -8,7 +8,7 @@ class Button extends Component {
         <button
           type="button"
           className={css.Button}
-          ///Не можу зрозуміти,як правильно передати довантаження картинок з пропсів при кліці на кнопку
+          // Не можу зрозуміти,як правильно передати довантаження картинок з пропсів при кліці на кнопку
           // onClick={() => {
           //   this.setState({ isLoading: true });
           //   getImage(this.props.image)
