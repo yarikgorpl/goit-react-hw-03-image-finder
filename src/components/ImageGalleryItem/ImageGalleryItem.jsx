@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
-
 import css from 'components/ImageGalleryItem/ImageGalleryItem.module.css';
-
-class ImageGalleryItem extends Component {
-  render() {
+const ImageGalleryItem = ({ image }) => {
+  return image.map(({ id, webformatURL, tags }) => {
     return (
-      <li class="gallery-item">
-        <img src="" alt="" />
+      <li key={id} className={css.ImageGalleryItem}>
+        <img
+          className={css.ImageGalleryItem_image}
+          src={webformatURL}
+          alt={tags}
+        />
       </li>
     );
-  }
-}
+  });
+};
 export default ImageGalleryItem;

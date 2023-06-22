@@ -1,40 +1,47 @@
 import React, { Component } from 'react';
+import { ImSearch } from 'react-icons/im';
 import css from 'components/Searchbar/Searchbar.module.css';
 
 class Searchbar extends Component {
   state = {
-    name: '',
+    searchImage: '',
+  };
+
+  handleNameChange = event => {
+    this.setState({ searchImage: event.currentTarget.value.toLowerCase() });
   };
   handleSubmit = event => {
     event.preventDefault();
-    this.props.onSubmit(this.state);
+    if (this.state.searchImage.trim() === '') {
+      alert('Wow,field is empty!');
+      return;
+    }
+    this.props.onSubmit(this.state.searchImage);
     this.reset();
-  };
-
-  handleInputChange = event => {
-    const { value } = event.currentTarget;
-    this.setState({ name: value });
   };
 
   reset = () => {
     this.setState({
-      name: '',
+      searchImage: '',
     });
   };
   render() {
     return (
-      <header class="searchbar">
-        <form class="form">
-          <button type="submit" class="button">
-            <span class="button-label">Search</span>
+      <header className={css.Searchbar}>
+        <form onSubmit={this.handleSubmit} className={css.SearchForm}>
+          <button type="submit" className={css.SearchForm_button}>
+            <ImSearch />
           </button>
 
           <input
-            class="input"
+            className={css.SearchForm_input}
             type="text"
-            autocomplete="off"
-            autofocus
+            autoComplete="off"
+            autoFocus
+            name="name"
             placeholder="Search images and photos"
+            value={this.state.image}
+            onChange={this.handleNameChange}
           />
         </form>
       </header>
