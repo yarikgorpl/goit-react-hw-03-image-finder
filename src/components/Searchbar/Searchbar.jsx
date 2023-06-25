@@ -12,19 +12,17 @@ class Searchbar extends Component {
   };
   handleSubmit = event => {
     event.preventDefault();
-    if (this.state.searchImage.trim() === '') {
+    const { searchImage } = this.state;
+    if (searchImage.trim() === '') {
       alert('Wow,field is empty!');
       return;
     }
-    this.props.onSubmit(this.state.searchImage);
-    this.reset();
-  };
-
-  reset = () => {
+    this.props.onSearchSubmit(searchImage);
     this.setState({
       searchImage: '',
     });
   };
+
   render() {
     return (
       <header className={css.Searchbar}>
@@ -40,7 +38,7 @@ class Searchbar extends Component {
             autoFocus
             name="name"
             placeholder="Search images and photos"
-            value={this.state.image}
+            value={this.state.searchImage}
             onChange={this.handleNameChange}
           />
         </form>

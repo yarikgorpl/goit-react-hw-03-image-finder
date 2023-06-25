@@ -1,7 +1,7 @@
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import React, { Component } from 'react';
 import css from 'components/ImageGallery/ImageGallery.module.css';
-import getImage from 'services/api';
+import getImages from 'services/api';
 import Button from 'components/Button/Button';
 import { ThreeDots } from 'react-loader-spinner';
 
@@ -9,16 +9,40 @@ class ImageGallery extends Component {
   state = {
     image: [],
     isLoading: false,
+    page: 1,
+    error: null,
+    activeImage: '',
   };
+
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.searchImage !== this.props.searchImage) {
+    const { page } = this.state;
+    const { searchImage } = this.props;
+    if (prevProps.searchImage !== searchImage || prevState.page !== page) {
       this.setState({ isLoading: true });
-      getImage(this.props.searchImage)
+      getImages(searchImage, page)
         .then(response => response.json())
-        .then(image => this.setState({ image: image.hits }))
+        .then(image =>
+          this.setState(prevValue => ({
+            image: [...prevValue.image, ...image.hits],
+          }))
+        )
+        .catch(error => this.setState({ error: error.message }))
         .finally(() => this.setState({ isLoading: false }));
     }
+
+    if (prevProps.searchImage !== searchImage) {
+      this.resetQuerry();
+    }
   }
+
+  onButtonClick = () => {
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+    }));
+  };
+  resetQuerry = () => {
+    this.setState({ page: 1, image: [] });
+  };
   render() {
     const { image, isLoading } = this.state;
     return (
@@ -27,7 +51,9 @@ class ImageGallery extends Component {
         <ul className={css.ImageGallery}>
           {image && <ImageGalleryItem image={image} />}
         </ul>
-        {this.props.searchImage && <Button onClick={this.state.image} />}
+        {this.props.searchImage && image.length % 12 === 0 && (
+          <Button onClick={this.onButtonClick} />
+        )}
       </>
     );
   }

@@ -4,6 +4,8 @@ import css from 'components/Modal/Modal.module.css';
 
 const modalRoot = document.querySelector('#modal-root');
 class Modal extends Component {
+  state = { isLoading: false };
+
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
   }
@@ -12,12 +14,12 @@ class Modal extends Component {
   }
   handleKeyDown = e => {
     if (e.code === 'Escape') {
-      this.props.onClose();
+      this.props.onToggleModal();
     }
   };
   handleOwerlayClick = e => {
     if (e.currentTarget === e.target) {
-      this.props.onClose();
+      this.props.onToggleModal();
     }
   };
 
